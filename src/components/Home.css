@@ -276,6 +276,13 @@
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+  .clear-filters-btn {
+    margin-top: 10px;
+    align-self: center;
+  }
+}
+
 .clear-filters-btn:hover {
   background: #c53030;
   transform: translateY(-1px);
@@ -424,12 +431,16 @@
   }
 
   .transaction-filters {
-    justify-content: stretch;
+    justify-content: center;
     flex-direction: column;
+    align-items: center;
   }
 
   .filter-group {
     min-width: auto;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
   }
 
   .transaction-item {
