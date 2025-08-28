@@ -417,7 +417,7 @@ const Home = () => {
             <p className="no-data">No transactions found. Sync your bank account to see transactions.</p>
           ) : (
             <div className="transactions-list">
-              {transactions.slice(0, 10).map(transaction => (
+              {transactions.slice(0, 50).map(transaction => (
                 <div key={transaction.id} className="transaction-item">
                   <div className="transaction-info">
                     <h4>{transaction.name}</h4>
@@ -583,7 +583,7 @@ const Home = () => {
             <p className="no-data">No transactions found. Sync your bank account to see transactions.</p>
           ) : (
             <div className="transactions-list">
-              {transactions.slice(0, 10).map(transaction => (
+              {transactions.slice(0, 50).map(transaction => (
                 <div key={transaction.id} className="transaction-item">
                   <div className="transaction-info">
                     <h4>{transaction.name}</h4>
