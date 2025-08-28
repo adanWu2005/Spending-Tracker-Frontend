@@ -299,7 +299,7 @@ const Home = () => {
                   {loading ? 'Connecting...' : !ready ? 'Initializing...' : 'Connect Bank Account'}
                 </button>
               )}
-              <Link to="/auto-tag-rules" className="nav-button">Auto-Tag Rules</Link>
+
               <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
           </header>
@@ -467,7 +467,7 @@ const Home = () => {
                 {loading ? 'Connecting...' : 'Connect Bank Account'}
               </button>
             )}
-            <Link to="/auto-tag-rules" className="nav-button">Auto-Tag Rules</Link>
+
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </div>
         </header>
