@@ -425,7 +425,7 @@ const Home = () => {
                     <p className="transaction-account">{transaction.account_name}</p>
                   </div>
                   <div className="transaction-amount">
-                    <span className={`amount ${transaction.amount < 0 ? 'expense' : 'income'}`}>
+                    <span className={`amount ${transaction.amount > 0 ? 'expense' : 'income'}`}>
                       {formatCurrency(transaction.amount)}
                     </span>
                     {transaction.primary_category_name && (
@@ -591,7 +591,7 @@ const Home = () => {
                     <p className="transaction-account">{transaction.account_name}</p>
                   </div>
                   <div className="transaction-amount">
-                    <span className={`amount ${transaction.amount < 0 ? 'expense' : 'income'}`}>
+                    <span className={`amount ${transaction.amount > 0 ? 'expense' : 'income'}`}>
                       {formatCurrency(transaction.amount)}
                     </span>
                     {transaction.primary_category_name && (
