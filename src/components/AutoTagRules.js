@@ -87,6 +87,19 @@ const AutoTagRules = () => {
     }
   }
 
+  const applyAutoTags = async () => {
+    try {
+      setLoading(true)
+      const response = await api.post('api/auto-tag-rules/apply/')
+      alert(response.data.message || 'Auto-tags applied successfully!')
+    } catch (error) {
+      console.error('Error applying auto-tags:', error)
+      alert('Error applying auto-tags. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
 
 
   return (
@@ -95,6 +108,9 @@ const AutoTagRules = () => {
         <h2>Auto-Tag Rules</h2>
         <div className="header-actions">
           <Link to="/" className="nav-button">Back to Dashboard</Link>
+          <button onClick={applyAutoTags} disabled={loading} className="apply-button">
+            {loading ? 'Applying...' : 'Apply Auto-Tags'}
+          </button>
           <button onClick={() => setShowForm(true)} className="add-button">
             Add New Rule
           </button>
