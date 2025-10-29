@@ -210,6 +210,8 @@ const Home = () => {
       setLoading(true)
       const response = await api.post('api/plaid/sync-transactions/')
       console.log('Sync response:', response.data)
+      // Refresh accounts too to ensure balances and any cleanup are reflected
+      await fetchAccounts()
       fetchTransactions()
       fetchSpendingSummary()
     } catch (error) {
