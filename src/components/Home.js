@@ -216,6 +216,16 @@ const Home = () => {
       fetchSpendingSummary()
     } catch (error) {
       console.error('Error syncing transactions:', error)
+      console.error('Error response data:', error.response?.data)
+      const errorMessage = error.response?.data?.error || error.message || 'Unknown error occurred'
+      console.error('Error message:', errorMessage)
+      
+      // Check if user needs to reconnect (expired token)
+      if (error.response?.data?.requires_reauth || error.response?.data?.error_code === 'ITEM_LOGIN_REQUIRED') {
+        alert('Your bank account connection has expired. Please reconnect your bank account by clicking "Connect Bank Account".')
+      } else {
+        alert(`Failed to sync transactions: ${errorMessage}`)
+      }
     } finally {
       setLoading(false)
     }
