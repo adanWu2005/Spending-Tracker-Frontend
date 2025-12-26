@@ -166,12 +166,14 @@ const Home = () => {
 
   const fetchSpendingSummary = async () => {
     try {
+      // This endpoint automatically categorizes uncategorized transactions from the last 30 days
       const response = await api.get('api/spending-summary/')
       setSpendingSummary(response.data)
     } catch (error) {
       console.error('Error fetching spending summary:', error)
     }
   }
+
 
   const createLinkToken = async () => {
     // Prevent multiple requests
@@ -212,8 +214,9 @@ const Home = () => {
       console.log('Sync response:', response.data)
       // Refresh accounts too to ensure balances and any cleanup are reflected
       await fetchAccounts()
-      fetchTransactions()
-      fetchSpendingSummary()
+      await fetchTransactions()
+      // Fetch spending summary - this will automatically categorize new transactions
+      await fetchSpendingSummary()
     } catch (error) {
       console.error('Error syncing transactions:', error)
       console.error('Error response data:', error.response?.data)
@@ -338,22 +341,32 @@ const Home = () => {
           )}
         </div>
 
-        {/* Spending Summary */}
-        <div className="dashboard-section">
-          <h2>Spending Summary (Last 30 Days)</h2>
-          {Object.keys(spendingSummary).length === 0 ? (
-            <p className="no-data">No spending data available.</p>
-          ) : (
-            <div className="spending-summary">
-              {Object.entries(spendingSummary).map(([category, amount]) => (
-                <div key={category} className="spending-item">
-                  <span className="category-name">{category}</span>
-                  <span className="category-amount">{formatCurrency(amount)}</span>
-                </div>
-              ))}
+          {/* Spending Summary */}
+          <div className="dashboard-section">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h2>Spending Summary (Last 30 Days)</h2>
+              <button 
+                onClick={categorizeTransactions} 
+                disabled={loading} 
+                className="sync-button"
+                style={{ fontSize: '12px', padding: '5px 10px' }}
+              >
+                {loading ? 'Categorizing...' : 'Categorize with AI'}
+              </button>
             </div>
-          )}
-        </div>
+            {Object.keys(spendingSummary).length === 0 ? (
+              <p className="no-data">No spending data available.</p>
+            ) : (
+              <div className="spending-summary">
+                {Object.entries(spendingSummary).map(([category, amount]) => (
+                  <div key={category} className="spending-item">
+                    <span className="category-name">{category}</span>
+                    <span className="category-amount">{formatCurrency(amount)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
         {/* Recent Transactions */}
         <div className="dashboard-section full-width">
