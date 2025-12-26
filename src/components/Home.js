@@ -167,8 +167,24 @@ const Home = () => {
   const fetchSpendingSummary = async () => {
     try {
       // This endpoint automatically categorizes uncategorized transactions from the last 30 days
-      const response = await api.get('api/spending-summary/')
-      setSpendingSummary(response.data)
+      // Add ?debug=true to see OpenAI usage stats
+      const response = await api.get('api/spending-summary/?debug=true')
+      
+      // Handle both regular response and debug response
+      if (response.data.summary) {
+        // Debug mode response
+        setSpendingSummary(response.data.summary)
+        console.log('📊 Spending Summary Debug Info:', response.data.debug)
+        if (response.data.debug.openai_key_configured) {
+          console.log('✅ OpenAI API key is configured')
+          console.log(`✅ ${response.data.debug.ai_categorized_count} out of ${response.data.debug.total_transactions} transactions categorized by AI`)
+        } else {
+          console.warn('⚠️ OpenAI API key is NOT configured - transactions will be categorized as "Other"')
+        }
+      } else {
+        // Regular response
+        setSpendingSummary(response.data)
+      }
     } catch (error) {
       console.error('Error fetching spending summary:', error)
     }
