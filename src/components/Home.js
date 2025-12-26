@@ -50,7 +50,8 @@ const Home = () => {
       await fetchUserData()
       await fetchAccounts()
       await fetchTransactions()
-      await fetchSpendingSummary()
+      // Force re-categorization after connecting bank account to ensure new transactions are properly categorized
+      await fetchSpendingSummary(true)
       
       console.log('Data refresh completed')
     } catch (error) {
@@ -82,7 +83,8 @@ const Home = () => {
     fetchUserData()
     fetchAccounts()
     fetchTransactions()
-    fetchSpendingSummary()
+    // Force re-categorization on initial load to fix any existing mis-categorized transactions
+    fetchSpendingSummary(true)
   }, [])
 
   // Refetch transactions when filters change
@@ -97,7 +99,8 @@ const Home = () => {
     if (user?.plaid_access_token) {
       fetchAccounts()
       fetchTransactions()
-      fetchSpendingSummary()
+      // Force re-categorization to ensure all transactions are properly categorized
+      fetchSpendingSummary(true)
     }
   }, [user?.plaid_access_token])
 
@@ -164,10 +167,14 @@ const Home = () => {
     }
   }
 
-  const fetchSpendingSummary = async () => {
+  const fetchSpendingSummary = async (forceRecategorize = false) => {
     try {
       // This endpoint automatically categorizes uncategorized transactions from the last 30 days
-      const response = await api.get('api/spending-summary/')
+      // Use force_recategorize=true to re-categorize all transactions
+      const url = forceRecategorize 
+        ? 'api/spending-summary/?force_recategorize=true'
+        : 'api/spending-summary/'
+      const response = await api.get(url)
       setSpendingSummary(response.data)
     } catch (error) {
       console.error('Error fetching spending summary:', error)
@@ -215,8 +222,8 @@ const Home = () => {
       // Refresh accounts too to ensure balances and any cleanup are reflected
       await fetchAccounts()
       await fetchTransactions()
-      // Fetch spending summary - this will automatically categorize new transactions
-      await fetchSpendingSummary()
+      // Fetch spending summary - force re-categorization to fix any mis-categorized transactions
+      await fetchSpendingSummary(true)
     } catch (error) {
       console.error('Error syncing transactions:', error)
       console.error('Error response data:', error.response?.data)
