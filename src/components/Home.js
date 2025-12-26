@@ -170,23 +170,39 @@ const Home = () => {
       // Add ?debug=true to see OpenAI usage stats
       const response = await api.get('api/spending-summary/?debug=true')
       
+      console.log('📊 Full Spending Summary Response:', response.data)
+      
       // Handle both regular response and debug response
-      if (response.data.summary) {
-        // Debug mode response
+      if (response.data && response.data.summary) {
+        // Debug mode response - extract summary object
         setSpendingSummary(response.data.summary)
         console.log('📊 Spending Summary Debug Info:', response.data.debug)
-        if (response.data.debug.openai_key_configured) {
+        if (response.data.debug && response.data.debug.openai_key_configured) {
           console.log('✅ OpenAI API key is configured')
           console.log(`✅ ${response.data.debug.ai_categorized_count} out of ${response.data.debug.total_transactions} transactions categorized by AI`)
         } else {
           console.warn('⚠️ OpenAI API key is NOT configured - transactions will be categorized as "Other"')
         }
+      } else if (response.data) {
+        // Regular response - check if it's already the summary object
+        // Filter out any non-category keys (like 'debug')
+        const summaryData = {}
+        for (const [key, value] of Object.entries(response.data)) {
+          // Only include entries that look like categories (have numeric values)
+          if (typeof value === 'number' && !isNaN(value)) {
+            summaryData[key] = value
+          }
+        }
+        setSpendingSummary(summaryData)
+        console.log('📊 Spending Summary (regular mode):', summaryData)
       } else {
-        // Regular response
-        setSpendingSummary(response.data)
+        console.warn('⚠️ No data received from spending summary endpoint')
+        setSpendingSummary({})
       }
     } catch (error) {
-      console.error('Error fetching spending summary:', error)
+      console.error('❌ Error fetching spending summary:', error)
+      console.error('Error details:', error.response?.data)
+      setSpendingSummary({})
     }
   }
 
