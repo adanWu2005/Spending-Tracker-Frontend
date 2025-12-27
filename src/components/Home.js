@@ -25,6 +25,7 @@ const Home = () => {
   const [accounts, setAccounts] = useState([])
   const [transactions, setTransactions] = useState([])
   const [spendingSummary, setSpendingSummary] = useState({})
+  const [totalNet, setTotalNet] = useState(null)
   const [loading, setLoading] = useState(false)
   const [linkToken, setLinkToken] = useState(null)
   const [transactionFilters, setTransactionFilters] = useState({
@@ -182,6 +183,12 @@ const Home = () => {
         // Debug mode response - extract summary object
         console.log('📦 Debug mode response detected')
         setSpendingSummary(response.data.summary)
+        // Store total_net for display
+        if (response.data.total_net !== undefined) {
+          setTotalNet(response.data.total_net)
+        } else {
+          setTotalNet(null)
+        }
         console.log('📊 Spending Summary Debug Info:', response.data.debug)
         
         if (response.data.debug) {
@@ -209,6 +216,7 @@ const Home = () => {
           }
         }
         setSpendingSummary(summaryData)
+        setTotalNet(null) // No total net in regular mode
         console.log('📊 Spending Summary (regular mode):', summaryData)
       } else {
         console.error('⚠️ No data received from spending summary endpoint')
@@ -423,10 +431,29 @@ const Home = () => {
               <p className="no-data">No spending data available.</p>
             ) : (
               <div className="spending-summary">
+                {/* Show total net at the top */}
+                {totalNet !== null && (
+                  <div style={{ 
+                    padding: '10px', 
+                    marginBottom: '15px', 
+                    backgroundColor: '#f5f5f5', 
+                    borderRadius: '5px',
+                    border: '1px solid #ddd',
+                    fontWeight: 'bold',
+                    fontSize: '16px'
+                  }}>
+                    <span>Total Net: </span>
+                    <span style={{ color: totalNet >= 0 ? '#d32f2f' : '#2e7d32' }}>
+                      {formatCurrency(totalNet)}
+                    </span>
+                  </div>
+                )}
                 {Object.entries(spendingSummary).map(([category, amount]) => (
                   <div key={category} className="spending-item">
                     <span className="category-name">{category}</span>
-                    <span className="category-amount">{formatCurrency(amount)}</span>
+                    <span className="category-amount" style={{ color: amount >= 0 ? '#d32f2f' : '#2e7d32' }}>
+                      {formatCurrency(amount)}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -608,10 +635,29 @@ const Home = () => {
               <p className="no-data">No spending data available.</p>
             ) : (
               <div className="spending-summary">
+                {/* Show total net at the top */}
+                {totalNet !== null && (
+                  <div style={{ 
+                    padding: '10px', 
+                    marginBottom: '15px', 
+                    backgroundColor: '#f5f5f5', 
+                    borderRadius: '5px',
+                    border: '1px solid #ddd',
+                    fontWeight: 'bold',
+                    fontSize: '16px'
+                  }}>
+                    <span>Total Net: </span>
+                    <span style={{ color: totalNet >= 0 ? '#d32f2f' : '#2e7d32' }}>
+                      {formatCurrency(totalNet)}
+                    </span>
+                  </div>
+                )}
                 {Object.entries(spendingSummary).map(([category, amount]) => (
                   <div key={category} className="spending-item">
                     <span className="category-name">{category}</span>
-                    <span className="category-amount">{formatCurrency(amount)}</span>
+                    <span className="category-amount" style={{ color: amount >= 0 ? '#d32f2f' : '#2e7d32' }}>
+                      {formatCurrency(amount)}
+                    </span>
                   </div>
                 ))}
               </div>
