@@ -236,7 +236,7 @@ const Home = () => {
     console.log('========================================')
     console.log('✅ FETCH SPENDING SUMMARY COMPLETE')
     console.log('========================================')
-  }
+    }
 
 
   const createLinkToken = async () => {
