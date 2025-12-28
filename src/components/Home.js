@@ -443,7 +443,7 @@ const Home = () => {
                     fontSize: '16px'
                   }}>
                     <span>Total Net: </span>
-                    <span style={{ color: totalNet >= 0 ? '#2e7d32' : '#d32f2f' }}>
+                    <span style={{ color: totalNet >= 0 ? '#d32f2f' : '#2e7d32' }}>
                       {formatCurrency(totalNet)}
                     </span>
                   </div>
@@ -451,7 +451,7 @@ const Home = () => {
                 {Object.entries(spendingSummary).map(([category, amount]) => (
                   <div key={category} className="spending-item">
                     <span className="category-name">{category}</span>
-                    <span className="category-amount" style={{ color: amount >= 0 ? '#2e7d32' : '#d32f2f' }}>
+                    <span className="category-amount" style={{ color: amount >= 0 ? '#d32f2f' : '#2e7d32' }}>
                       {formatCurrency(amount)}
                     </span>
                   </div>
@@ -647,7 +647,7 @@ const Home = () => {
                     fontSize: '16px'
                   }}>
                     <span>Total Net: </span>
-                    <span style={{ color: totalNet >= 0 ? '#2e7d32' : '#d32f2f' }}>
+                    <span style={{ color: totalNet >= 0 ? '#d32f2f' : '#2e7d32' }}>
                       {formatCurrency(totalNet)}
                     </span>
                   </div>
@@ -655,7 +655,7 @@ const Home = () => {
                 {Object.entries(spendingSummary).map(([category, amount]) => (
                   <div key={category} className="spending-item">
                     <span className="category-name">{category}</span>
-                    <span className="category-amount" style={{ color: amount >= 0 ? '#2e7d32' : '#d32f2f' }}>
+                    <span className="category-amount" style={{ color: amount >= 0 ? '#d32f2f' : '#2e7d32' }}>
                       {formatCurrency(amount)}
                     </span>
                   </div>
