@@ -33,7 +33,8 @@ const Home = () => {
     endDate: '',
     accountId: '',
     transactionType: '',
-    keyword: ''
+    keyword: '',
+    category: ''
   })
   const navigate = useNavigate()
   const shouldOpenRef = useRef(false)
@@ -155,6 +156,9 @@ const Home = () => {
       }
       if (transactionFilters.keyword) {
         params.append('keyword', transactionFilters.keyword)
+      }
+      if (transactionFilters.category) {
+        params.append('category', transactionFilters.category)
       }
       
       const url = `api/transactions/${params.toString() ? '?' + params.toString() : ''}`
@@ -316,7 +320,8 @@ const Home = () => {
       endDate: '',
       accountId: '',
       transactionType: '',
-      keyword: ''
+      keyword: '',
+      category: ''
     })
   }
 
@@ -525,6 +530,22 @@ const Home = () => {
                   className="filter-input"
                 />
               </div>
+              <div className="filter-group">
+                <label htmlFor="category-filter-1">Category:</label>
+                <select
+                  id="category-filter-1"
+                  value={transactionFilters.category}
+                  onChange={(e) => handleFilterChange('category', e.target.value)}
+                  className="filter-input"
+                >
+                  <option value="">All Categories</option>
+                  {Object.keys(spendingSummary).sort().map(category => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <button onClick={clearFilters} className="clear-filters-btn">
                 Clear Filters
               </button>
@@ -719,15 +740,31 @@ const Home = () => {
                 </select>
               </div>
               <div className="filter-group">
-                <label htmlFor="keyword-search-1">Search:</label>
+                <label htmlFor="keyword-search-2">Search:</label>
                 <input
                   type="text"
-                  id="keyword-search-1"
+                  id="keyword-search-2"
                   placeholder="Search transaction names..."
                   value={transactionFilters.keyword}
                   onChange={(e) => handleFilterChange('keyword', e.target.value)}
                   className="filter-input"
                 />
+              </div>
+              <div className="filter-group">
+                <label htmlFor="category-filter-2">Category:</label>
+                <select
+                  id="category-filter-2"
+                  value={transactionFilters.category}
+                  onChange={(e) => handleFilterChange('category', e.target.value)}
+                  className="filter-input"
+                >
+                  <option value="">All Categories</option>
+                  {Object.keys(spendingSummary).sort().map(category => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
               </div>
               <button onClick={clearFilters} className="clear-filters-btn">
                 Clear Filters
