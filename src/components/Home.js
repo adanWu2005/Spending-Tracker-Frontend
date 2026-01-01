@@ -26,6 +26,7 @@ const Home = () => {
   const [transactions, setTransactions] = useState([])
   const [spendingSummary, setSpendingSummary] = useState({})
   const [totalNet, setTotalNet] = useState(null)
+  const [spendingSummaryDays, setSpendingSummaryDays] = useState(30)
   const [loading, setLoading] = useState(false)
   const [linkToken, setLinkToken] = useState(null)
   const [transactionFilters, setTransactionFilters] = useState({
@@ -51,7 +52,7 @@ const Home = () => {
       await fetchUserData()
       await fetchAccounts()
       await fetchTransactions()
-      await fetchSpendingSummary()
+      await fetchSpendingSummary(spendingSummaryDays)
       
       console.log('Data refresh completed')
     } catch (error) {
@@ -83,8 +84,14 @@ const Home = () => {
     fetchUserData()
     fetchAccounts()
     fetchTransactions()
-    fetchSpendingSummary()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Fetch spending summary when component mounts or when days change
+  useEffect(() => {
+    fetchSpendingSummary(spendingSummaryDays)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spendingSummaryDays])
 
   // Refetch transactions when filters change
   useEffect(() => {
@@ -165,15 +172,16 @@ const Home = () => {
     }
   }
 
-  const fetchSpendingSummary = async () => {
+  const fetchSpendingSummary = async (days = spendingSummaryDays) => {
     // ALWAYS LOG - This will help us see if the function is even being called
     console.log('========================================')
     console.log('🔄 FETCHING SPENDING SUMMARY - FUNCTION CALLED')
+    console.log(`📅 Days: ${days}`)
     console.log('========================================')
     
     try {
-      console.log('📡 Making API request to: api/spending-summary/?debug=true')
-      const response = await api.get('api/spending-summary/?debug=true')
+      console.log(`📡 Making API request to: api/spending-summary/?debug=true&days=${days}`)
+      const response = await api.get(`api/spending-summary/?debug=true&days=${days}`)
       
       console.log('✅ API Response received!')
       console.log('📊 Full Response Data:', JSON.stringify(response.data, null, 2))
@@ -280,7 +288,7 @@ const Home = () => {
       await fetchAccounts()
       await fetchTransactions()
       // Fetch spending summary - this will automatically categorize new transactions
-      await fetchSpendingSummary()
+      await fetchSpendingSummary(spendingSummaryDays)
     } catch (error) {
       console.error('Error syncing transactions:', error)
       console.error('Error response data:', error.response?.data)
@@ -407,7 +415,24 @@ const Home = () => {
 
           {/* Spending Summary */}
           <div className="dashboard-section">
-            <h2>Spending Summary (Last 30 Days)</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h2>Spending Summary (Last {spendingSummaryDays} Days)</h2>
+              <div className="filter-group" style={{ margin: 0 }}>
+                <label htmlFor="spending-summary-days-1" style={{ marginRight: '8px' }}>Period:</label>
+                <select
+                  id="spending-summary-days-1"
+                  value={spendingSummaryDays}
+                  onChange={(e) => setSpendingSummaryDays(Number(e.target.value))}
+                  className="filter-input"
+                  style={{ fontSize: '14px', padding: '5px 10px' }}
+                >
+                  <option value={7}>7 Days</option>
+                  <option value={14}>14 Days</option>
+                  <option value={30}>30 Days</option>
+                  <option value={60}>60 Days</option>
+                </select>
+              </div>
+            </div>
             {Object.keys(spendingSummary).length === 0 ? (
               <p className="no-data">No spending data available.</p>
             ) : (
@@ -592,7 +617,24 @@ const Home = () => {
 
           {/* Spending Summary */}
           <div className="dashboard-section">
-            <h2>Spending Summary (Last 30 Days)</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h2>Spending Summary (Last {spendingSummaryDays} Days)</h2>
+              <div className="filter-group" style={{ margin: 0 }}>
+                <label htmlFor="spending-summary-days-2" style={{ marginRight: '8px' }}>Period:</label>
+                <select
+                  id="spending-summary-days-2"
+                  value={spendingSummaryDays}
+                  onChange={(e) => setSpendingSummaryDays(Number(e.target.value))}
+                  className="filter-input"
+                  style={{ fontSize: '14px', padding: '5px 10px' }}
+                >
+                  <option value={7}>7 Days</option>
+                  <option value={14}>14 Days</option>
+                  <option value={30}>30 Days</option>
+                  <option value={60}>60 Days</option>
+                </select>
+              </div>
+            </div>
             {Object.keys(spendingSummary).length === 0 ? (
               <p className="no-data">No spending data available.</p>
             ) : (
