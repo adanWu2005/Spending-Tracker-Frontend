@@ -143,6 +143,7 @@
 .accounts-grid::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 6px;
+  min-height: 50px;
 }
 
 .accounts-grid::-webkit-scrollbar-thumb:hover {
@@ -384,6 +385,7 @@ select.filter-input option[selected] {
 .transactions-list::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 6px;
+  min-height: 50px;
 }
 
 .transactions-list::-webkit-scrollbar-thumb:hover {
