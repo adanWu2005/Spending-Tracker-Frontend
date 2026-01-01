@@ -55,23 +55,23 @@
 }
 
 .sync-button {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #4a9eff 0%, #5dade2 100%);
   color: white;
 }
 
 .sync-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(67, 233, 123, 0.5);
+  box-shadow: 0 8px 25px rgba(74, 158, 255, 0.5);
 }
 
 .logout-button {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: white;
 }
 
 .logout-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(250, 112, 154, 0.5);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
 }
 
 .nav-button {
@@ -150,19 +150,23 @@
 }
 
 .account-card {
-  background: linear-gradient(135deg, rgba(240, 147, 251, 0.9) 0%, rgba(245, 87, 108, 0.9) 100%);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
   color: white;
   padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 4px solid #4a9eff;
 }
 
 .account-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(240, 147, 251, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .account-card h3 {
