@@ -402,12 +402,12 @@ const Home = () => {
                 </div>
               ))}
             </div>
-          )}
-        </div>
+            )}
+          </div>
 
           {/* Spending Summary */}
           <div className="dashboard-section">
-            <h2 style={{ marginBottom: '10px' }}>Spending Summary (Last 30 Days)</h2>
+            <h2>Spending Summary (Last 30 Days)</h2>
             {Object.keys(spendingSummary).length === 0 ? (
               <p className="no-data">No spending data available.</p>
             ) : (
@@ -592,26 +592,7 @@ const Home = () => {
 
           {/* Spending Summary */}
           <div className="dashboard-section">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <h2>Spending Summary (Last 30 Days)</h2>
-              <button 
-                onClick={async () => {
-                  console.log('🧪 TEST BUTTON CLICKED - Testing OpenAI...')
-                  try {
-                    const response = await api.get('api/test-openai-key/')
-                    console.log('🧪 OpenAI Test Result:', response.data)
-                    alert(`OpenAI Key Status: ${response.data.openai_key_found ? 'FOUND ✅' : 'NOT FOUND ❌'}\nTest Successful: ${response.data.openai_test_successful ? 'YES ✅' : 'NO ❌'}`)
-                  } catch (error) {
-                    console.error('🧪 OpenAI Test Error:', error)
-                    alert('Error testing OpenAI: ' + (error.response?.data?.error || error.message))
-                  }
-                }}
-                className="sync-button"
-                style={{ fontSize: '12px', padding: '5px 10px' }}
-              >
-                Test OpenAI Key
-              </button>
-            </div>
+            <h2>Spending Summary (Last 30 Days)</h2>
             {Object.keys(spendingSummary).length === 0 ? (
               <p className="no-data">No spending data available.</p>
             ) : (
