@@ -287,52 +287,53 @@
 
 /* Select dropdown styling */
 select.filter-input {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a0a0a 100%),
-              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffffff' d='M8 12L2 5h12z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat, no-repeat;
-  background-position: center, right 10px center;
-  background-size: 100% 100%, 16px;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
   padding-right: 40px;
-  position: relative;
-}
-
-select.filter-input:focus {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a0a0a 100%),
-              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffffff' d='M8 12L2 5h12z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat, no-repeat;
-  background-position: center, right 10px center;
-  background-size: 100% 100%, 16px;
-}
-
-/* Hide default dropdown arrow for different browsers */
-select.filter-input::-webkit-select-button {
-  display: none;
+  cursor: pointer;
 }
 
 select.filter-input::-ms-expand {
   display: none;
 }
 
-/* Option elements styling */
+/* Option elements styling - dark background with white text */
 select.filter-input option {
-  background: #1a1a1a;
-  color: #ffffff;
-  padding: 10px;
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+  padding: 12px 10px;
 }
 
 select.filter-input option:hover,
 select.filter-input option:focus {
-  background: #4a9eff;
-  color: #ffffff;
+  background: #4a9eff !important;
+  color: #ffffff !important;
 }
 
-select.filter-input option:checked {
-  background: #4a9eff;
-  color: #ffffff;
+select.filter-input option:checked,
+select.filter-input option[selected] {
+  background: #4a9eff !important;
+  color: #ffffff !important;
+}
+
+/* For Firefox */
+@-moz-document url-prefix() {
+  select.filter-input option {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  select.filter-input option:checked,
+  select.filter-input option:hover {
+    background: #4a9eff;
+    color: #ffffff;
+  }
 }
 
 .clear-filters-btn {
