@@ -282,7 +282,10 @@ const Home = () => {
   const syncTransactions = async () => {
     try {
       setLoading(true)
-      const response = await api.post('api/plaid/sync-transactions/')
+      // Sync can take a long time (Plaid + OpenAI per transaction). Use a long timeout.
+      // If the request times out or gets ERR_NETWORK, the backend may still complete;
+      // we'll refetch data after a delay so the UI updates without manual refresh.
+      const response = await api.post('api/plaid/sync-transactions/', {}, { timeout: 120000 })
       console.log('Sync response:', response.data)
       // Refresh accounts too to ensure balances and any cleanup are reflected
       await fetchAccounts()
@@ -292,13 +295,32 @@ const Home = () => {
     } catch (error) {
       console.error('Error syncing transactions:', error)
       console.error('Error response data:', error.response?.data)
-      const errorMessage = error.response?.data?.error || error.message || 'Unknown error occurred'
-      console.error('Error message:', errorMessage)
-      
-      // Check if user needs to reconnect (expired token)
+      const isNetworkError = error.code === 'ERR_NETWORK' || error.message === 'Network Error'
+      const isTimeout = error.code === 'ECONNABORTED' || error.message?.includes('timeout')
+
+      // Check if user needs to reconnect (expired token) - only when we got a real response
       if (error.response?.data?.requires_reauth || error.response?.data?.error_code === 'ITEM_LOGIN_REQUIRED') {
         alert('Your bank account connection has expired. Please reconnect your bank account by clicking "Connect Bank Account".')
+        return
+      }
+
+      if (isNetworkError || isTimeout) {
+        // Backend may have completed sync; connection dropped due to long request (e.g. Heroku 30s limit).
+        // Refresh data after a short delay so the UI shows updated transactions without manual refresh.
+        alert(
+          'The sync request took longer than expected. Your data may have updated—refreshing in a few seconds.'
+        )
+        setTimeout(async () => {
+          try {
+            await fetchAccounts()
+            await fetchTransactions()
+            await fetchSpendingSummary(spendingSummaryDays)
+          } catch (refetchError) {
+            console.error('Error refetching after sync:', refetchError)
+          }
+        }, 5000)
       } else {
+        const errorMessage = error.response?.data?.error || error.message || 'Unknown error occurred'
         alert(`Failed to sync transactions: ${errorMessage}`)
       }
     } finally {
